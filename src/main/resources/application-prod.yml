@@ -1,1 +1,12 @@
-
+server:
+  port: 7002
+spring:
+  datasource:
+    url: mysql://root:-cG3BAaaC532Eghc4F--D6-hH6H5agCf@monorail.proxy.rlwy.net:26536/railway
+    username: root
+    password: -cG3BAaaC532Eghc4F--D6-hH6H5agCf
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true

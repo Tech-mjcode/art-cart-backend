@@ -1,7 +1,9 @@
 package com.artcart.services.impl;
 
 
+import com.artcart.model.Seller;
 import com.artcart.model.SingInAndSingUp;
+import com.artcart.repository.SellerRepo;
 import com.artcart.repository.SingInAndSingUpRepo;
 import com.artcart.request.SignUpRequest;
 import com.artcart.request.SignInRequest;
@@ -14,6 +16,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class SingInAndSingUpImpl implements SingInAndSingUpService {
 
@@ -21,10 +25,14 @@ public class SingInAndSingUpImpl implements SingInAndSingUpService {
     private PasswordEncoder passwordEncoder;
     private CustomUserService customUserService;
 
-    public SingInAndSingUpImpl (SingInAndSingUpRepo singInAndSingUpRepo,PasswordEncoder passwordEncoder , CustomUserService customUserService){
+    private SellerRepo sellerRepo;
+
+    public SingInAndSingUpImpl (SingInAndSingUpRepo singInAndSingUpRepo,PasswordEncoder passwordEncoder ,
+                                CustomUserService customUserService,SellerRepo sellerRepo){
         this.singInAndSingUpRepo = singInAndSingUpRepo;
         this.passwordEncoder = passwordEncoder;
         this.customUserService = customUserService;
+        this.sellerRepo = sellerRepo;
     }
     @Override
     public SingInAndSingUp signUp(SignUpRequest signUpRequest) {
@@ -36,6 +44,14 @@ public class SingInAndSingUpImpl implements SingInAndSingUpService {
         singInAndSingUp.setEmail(signUpRequest.getEmail());
         singInAndSingUp.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
         singInAndSingUp.setRole("ROLE_"+signUpRequest.getRole().toUpperCase());
+
+        if(singInAndSingUp.getRole().compareTo("ROLE_SELLER")==0){
+            Seller seller = new Seller();
+            seller.setEmail(singInAndSingUp.getEmail());
+            seller.setRegDate(LocalDateTime.now());
+            sellerRepo.save(seller);
+        }
+
         return singInAndSingUpRepo.save(singInAndSingUp);
 
     }

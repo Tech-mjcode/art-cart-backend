@@ -1,7 +1,10 @@
 package com.artcart.config;
 
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -62,5 +65,20 @@ public class OwnSecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder(){
         return  new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public ModelMapper modelMapper(){
+        return new ModelMapper();
+    }
+
+    @Bean
+    public Cloudinary getClouninary(){
+        Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+                "cloud_name", "dkzsuybqf",
+                "api_key", "593595544653913",
+                "api_secret", "QDltiOMDgF2HioqN1xCJ3ZEse28",
+                "secure", true));
+        return cloudinary;
     }
 }

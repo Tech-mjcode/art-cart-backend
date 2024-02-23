@@ -27,7 +27,7 @@ public class JwtTokenProvider {
         return  jwt;
     }
 
-    public String getEmailFromToken(String jwtToken){
+    public String getEmailFromToken(String jwtToken) throws Exception{
         jwtToken = jwtToken.substring(7);
         Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwtToken).getBody();
         String email = String.valueOf(claims.get("email"));

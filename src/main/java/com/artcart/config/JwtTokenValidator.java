@@ -1,5 +1,6 @@
 package com.artcart.config;
 
+import com.artcart.exception.InvalidTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -37,10 +38,9 @@ public class JwtTokenValidator extends OncePerRequestFilter {
                 Authentication authentication =  new UsernamePasswordAuthenticationToken(userName,null,auths);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }catch (Exception e){
-                throw new BadCredentialsException("invalid token received..");
+                throw new BadCredentialsException("invalid jwt token received.");
             }
         }
-
         filterChain.doFilter(request,response);
     }
 }

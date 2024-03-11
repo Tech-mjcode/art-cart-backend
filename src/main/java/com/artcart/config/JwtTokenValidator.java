@@ -15,18 +15,25 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.util.List;
 
 public class JwtTokenValidator extends OncePerRequestFilter {
+
+    private HandlerExceptionResolver handlerExceptionResolver;
+
+    public JwtTokenValidator(HandlerExceptionResolver handlerExceptionResolver) {
+        this.handlerExceptionResolver = handlerExceptionResolver;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String jwt = request.getHeader(JwtConstant.JWT_HEADER);
-
-        if(jwt!=null){
-            try{
+        try{
+            if(jwt != null){
                 //Bearer + token
                 jwt = jwt.substring(7);
                 SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes());
@@ -34,13 +41,18 @@ public class JwtTokenValidator extends OncePerRequestFilter {
                 String userName = String.valueOf(claims.get("email"));
 //                String authorities =  String.valueOf(claims.get("authorities"));
                 String authorities =  String.valueOf(claims.get("role"));
+
                 List<GrantedAuthority> auths = AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
                 Authentication authentication =  new UsernamePasswordAuthenticationToken(userName,null,auths);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            }catch (Exception e){
-                throw new BadCredentialsException("invalid jwt token received.");
             }
+
+            filterChain.doFilter(request,response);
+        }catch (Exception e){
+            e.printStackTrace();
+            handlerExceptionResolver.resolveException(request,response,null,e);
+
         }
-        filterChain.doFilter(request,response);
+
     }
 }

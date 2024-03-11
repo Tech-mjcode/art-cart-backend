@@ -7,4 +7,6 @@ public interface SellerService {
     SellerDto create(SellerDto sellerDto);
     SellerDto getSellerByEmail(String email);
 
+    SellerDto updateProfile(SellerDto sellerDto);
+
 }

@@ -37,4 +37,9 @@ public class SellerServiceimpl implements SellerService {
         Seller byEmail = sellerRepo.findByEmail(email);
         return modelMapper.map(byEmail,SellerDto.class);
     }
+
+    @Override
+    public SellerDto updateProfile(SellerDto sellerDto) {
+        return null;
+    }
 }

@@ -51,7 +51,7 @@ public class OwnSecurityConfig {
 
                         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
-                        corsConfiguration.setAllowedOrigins(Arrays.asList("http://10.68.1.42:5173/","http://localhost:5173/**","http://10.68.9.223:8000/**","http://10.68.9.223:8000/signup"));
+                        corsConfiguration.setAllowedOrigins(Arrays.asList("http://10.68.9.223:8000/signup"));
 
                         corsConfiguration.setAllowedMethods(Collections.singletonList("*"));
                         corsConfiguration.setAllowCredentials(true);

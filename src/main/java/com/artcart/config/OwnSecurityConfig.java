@@ -51,7 +51,7 @@ public class OwnSecurityConfig {
 
                         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
-                        corsConfiguration.setAllowedOrigins(Arrays.asList("http://10.68.1.42:5173/**","http://10.68.9.223:5173/**"));
+                        corsConfiguration.setAllowedOrigins(Arrays.asList("http://10.68.1.42:5173/","http://10.68.9.223:5173/"));
 
                         corsConfiguration.setAllowedMethods(Collections.singletonList("*"));
                         corsConfiguration.setAllowCredentials(true);

@@ -73,8 +73,10 @@ public class SellerController {
         }catch (Exception e){
             throw new CloudinaryImageUploadException("file uploaded failed");
         }
+    }
 
-
-
+    @GetMapping("/test")
+    public String home (){
+        return  "home";
     }
 }

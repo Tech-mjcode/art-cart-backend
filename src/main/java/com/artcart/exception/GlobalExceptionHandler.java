@@ -2,9 +2,14 @@ package com.artcart.exception;
 
 
 import com.artcart.response.InvalidDetailResponse;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.ServletException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -33,4 +38,31 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(SignatureException.class)
+    public ProblemDetail invalidTokenHandler(Exception e){
+        ProblemDetail errorDetails = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN,e.getMessage());
+        errorDetails.setProperty("message","invalid-jwt-Token");
+        return  errorDetails;
+    }
+
+    @ExceptionHandler(MalformedJwtException.class)
+    public ProblemDetail malformedJwtExceptionHandler(Exception e){
+        ProblemDetail errorDetails = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN,e.getMessage());
+        errorDetails.setProperty("message","invalid-Token");
+        return  errorDetails;
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ProblemDetail expiredJwtExceptionHandler(Exception e){
+        ProblemDetail errorDetails = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN,e.getMessage());
+        errorDetails.setProperty("message","jwt-token-expired");
+        return  errorDetails;
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ProblemDetail accessDeniedException(AccessDeniedException e){
+        ProblemDetail errorDetails = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN,e.getMessage());
+        errorDetails.setProperty("message","Access-Denied");
+        return  errorDetails;
+    }
 }

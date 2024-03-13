@@ -54,7 +54,7 @@ public class OwnSecurityConfig {
                         // corsConfiguration.setAllowedOrigins(Arrays.asList("http://10.68.9.223:8000/","http://10.68.6.131:8000/"));
                         // configuration.setAllowedOrigins(Arrays.asList("*"));
 
-                         corsConfiguration.setAllowedOrigins(Arrays.asList("http://10.68.9.223:8000/"));
+                         corsConfiguration.setAllowedOrigins(Arrays.asList("http://10.68.9.223:8000/**"));
 
                         corsConfiguration.setAllowedMethods(Collections.singletonList("*"));
                         corsConfiguration.setAllowCredentials(true);
